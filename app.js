@@ -1,16 +1,12 @@
-require("dotenv").config(); 
 const express = require("express");
 const bodyparser = require("body-parser");
 const app = express();
 app.set("view engine","ejs");
 app.use(express.urlencoded({extended:true}));
 app.use(express.static("public"));
-
+const port = process.env.PORT || 8080;
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  });
+mongoose.connect("mongodb://localhost:27017/todo");
 
 const trySchema = new mongoose.Schema({
     name: String
