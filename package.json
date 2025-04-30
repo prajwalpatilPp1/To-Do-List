@@ -16,7 +16,6 @@
     "mongodb": "^6.16.0",
     "mongoose": "^8.14.0"
   },
-  "devDependencies": {},
   "keywords": [],
   "description": ""
 }
