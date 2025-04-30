@@ -1,88 +1,63 @@
 const express = require("express");
-const bodyparser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
 
-app.set("view engine","ejs");
-app.use(express.urlencoded({extended:true}));
-
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-
-mongoose.connect("mongodb+srv://prajwalpatil392:admin123@cluster0.zfnynjx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", { useNewUrlParser: true, useUnifiedTopology: true });
-
+mongoose.connect("mongodb+srv://prajwalpatil392:admin123@cluster0.zfnynjx.mongodb.net/todoDB?retryWrites=true&w=majority&appName=Cluster0");
 
 const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "❌ MongoDB connection error:"));
-db.once("open", function () {
+db.once("open", async function () {
     console.log("✅ Connected to MongoDB successfully!");
-});
 
-const trySchema = new mongoose.Schema({
-    name: String
-})
+    const item = mongoose.model("task", new mongoose.Schema({ name: String }));
 
-const item = mongoose.model("task",trySchema);
-
-const  todo1 = new item({
-    name:"Prajwal"
-});
-const  todo2 = new item({
-    name:"Hello"
-});
-const  todo3 = new item({
-    name:"Hii"
-});
-const  todo4  = new item({
-    name:"Bye Bye "
-});
-
-
-todo1.save();
-todo4.save();
-
-app.get("/",async function(req,res){
-    try{
-        const foundItems = await item.find();
-        res.render("list",{ejes:foundItems});
+    // Insert default items only if collection is empty
+    const count = await item.countDocuments();
+    if (count === 0) {
+        await item.insertMany([
+            { name: "Prajwal" },
+            { name: "Hello" },
+            { name: "Hii" },
+            { name: "Bye Bye" }
+        ]);
+        console.log("✅ Default items added to DB.");
     }
-    catch(err){
-        console.log(err);
-    }
-    
-});
 
-app.post("/",async function(req,res){
-    try{
-        const itemName = req.body.ele1;
-        const todo1 = new item({
-            name:itemName
-        });
-        todo1.save();
-    }
-    catch(err)
-    {
-        console.log(err);
-    }
-    res.redirect("/");
-    
-});
+    app.get("/", async function (req, res) {
+        try {
+            const foundItems = await item.find();
+            res.render("list", { ejes: foundItems });
+        } catch (err) {
+            console.log(err);
+        }
+    });
 
-app.post("/delete",async function(req,res){
-    try{
-        const checked = req.body.checkbox1;
-        await item.findByIdAndDelete(checked);
+    app.post("/", async function (req, res) {
+        try {
+            const itemName = req.body.ele1;
+            await item.create({ name: itemName });
+        } catch (err) {
+            console.log(err);
+        }
         res.redirect("/");
-    }
-    catch(err){
-        console.log(err);
+    });
+
+    app.post("/delete", async function (req, res) {
+        try {
+            const checked = req.body.checkbox1;
+            await item.findByIdAndDelete(checked);
+        } catch (err) {
+            console.log(err);
+        }
         res.redirect("/");
-    }
-});
+    });
 
-app.listen("3000",function(){
-
-    console.log("Server is running!");
-
+    app.listen(3000, function () {
+        console.log("🚀 Server is running!");
+    });
 });
