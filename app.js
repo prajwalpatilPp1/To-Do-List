@@ -6,7 +6,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://prajwalpatil392:admin123@cluster0.zfnynjx.mongodb.net/todoDB?retryWrites=true&w=majority&appName=Cluster0");
+mongoose.connect("mongodb+srv://prajwalpatil392:admin123@cluster0.zfnynjx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 
 const db = mongoose.connection;
 
