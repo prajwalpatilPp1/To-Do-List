@@ -7,9 +7,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 
-const main = ()=>{
+const main = async()=>{
     try {
-        mongoose.connect("mongodb+srv://prajwalpatil392:admin123@cluster0.lh4ctac.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+       await mongoose.connect("mongodb+srv://prajwalpatil392:admin123@cluster0.lh4ctac.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
         console.log("✅ Connected to MongoDB successfully!");
     } catch (error) {
         console.log("MongoDb not connected",error);
