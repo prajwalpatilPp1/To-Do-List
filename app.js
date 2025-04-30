@@ -23,7 +23,7 @@ const Task = mongoose.model("Task", new mongoose.Schema({ name: String }));
 
 app.get("/", async function (req, res) {
     try {
-        const foundItems = await item.find();
+        const foundItems = await Task.find();
         res.render("list", { ejes: foundItems });
     } catch (err) {
         console.log(err);
@@ -33,7 +33,7 @@ app.get("/", async function (req, res) {
 app.post("/", async function (req, res) {
     try {
         const itemName = req.body.ele1;
-        await item.create({ name: itemName });
+        await Task.create({ name: itemName });
     } catch (err) {
         console.log(err);
     }
@@ -43,7 +43,7 @@ app.post("/", async function (req, res) {
 app.post("/delete", async function (req, res) {
     try {
         const checked = req.body.checkbox1;
-        await item.findByIdAndDelete(checked);
+        await Task.findByIdAndDelete(checked);
     } catch (err) {
         console.log(err);
     }
