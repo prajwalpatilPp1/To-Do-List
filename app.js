@@ -9,7 +9,8 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.static("public"));
 
 
-mongoose.connect("mongodb://localhost:27017/tasks", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://prajwalpatil392:admin123@cluster0.zfnynjx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", { useNewUrlParser: true, useUnifiedTopology: true });
+
 
 const db = mongoose.connection;
 
@@ -39,6 +40,7 @@ const  todo4  = new item({
 
 
 todo1.save();
+todo4.save();
 
 app.get("/",async function(req,res){
     try{
