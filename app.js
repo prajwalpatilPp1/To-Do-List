@@ -17,7 +17,7 @@ const main = ()=>{
 }
 
 main();
-const item = mongoose.model("task", new mongoose.Schema({ name: String }));
+const Task = mongoose.model("Task", new mongoose.Schema({ name: String }));
 
 
 
@@ -49,6 +49,7 @@ app.post("/delete", async function (req, res) {
     }
     res.redirect("/");
 });
+
 
 app.listen(3000, function () {
     console.log("🚀 Server is running!");
