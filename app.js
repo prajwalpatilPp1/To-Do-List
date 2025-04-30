@@ -1,12 +1,22 @@
 const express = require("express");
 const bodyparser = require("body-parser");
 const app = express();
+const mongoose = require("mongoose");
+
 app.set("view engine","ejs");
 app.use(express.urlencoded({extended:true}));
+
 app.use(express.static("public"));
-const port = process.env.PORT || 8080;
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/todo");
+
+
+mongoose.connect("mongodb://localhost:27017/tasks", { useNewUrlParser: true, useUnifiedTopology: true });
+
+const db = mongoose.connection;
+
+db.on("error", console.error.bind(console, "❌ MongoDB connection error:"));
+db.once("open", function () {
+    console.log("✅ Connected to MongoDB successfully!");
+});
 
 const trySchema = new mongoose.Schema({
     name: String
@@ -15,7 +25,7 @@ const trySchema = new mongoose.Schema({
 const item = mongoose.model("task",trySchema);
 
 const  todo1 = new item({
-    name:"Create some videos"
+    name:"Prajwal"
 });
 const  todo2 = new item({
     name:"Hello"
