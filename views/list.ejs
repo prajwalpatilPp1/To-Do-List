@@ -1,39 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
-    <link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <title>Todo List</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+  <div class="box">
+    <h1>Todo List</h1>
+  </div>
 
-    <div class="box">
-        <h1 >Todo List</h1>
-    </div>
+  <!-- ✅ Show todo list first -->
+  <div class="box">
+    <ul>
+      <% items.forEach(function(item) { %>
+        <li>
+          <%= item.name %> - <strong><%= item.priority %></strong>
+          <span>
+            <!-- Delete form -->
+            <form action="/delete/<%= item._id %>?_method=DELETE" method="POST" style="display: inline;">
+              <button id="delete-button" name="deleteTask" onclick="this.form.submit()">Delete</button>
+            </form>
 
-    <div class="box">
-        
-        <ul>
-            
-                <% ejes.forEach(function(items){ %>
-                   <form action="delete" method="post">
-                    <div class="item">
-                        <input type="checkbox" name="checkbox1" value="<%= items._id %>"  onchange="this.form.submit()" >
-                    
-                        <p><%= items.name %></p>
-                    </div>
-                   </form>
-                <% }) %>
-            
-            
-        </ul>
+            <!-- Edit form -->
+            <form action="/edit/<%= item._id %>?_method=PUT" method="POST" style="display: inline;">
+              <input type="text" name="updatedName" placeholder="Update task" required>
+              <button id="edit-button" type="submit">Edit</button>
+            </form>
+          </span>
+          <hr>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
 
-        <form action="/" method="post">
-            <input type="text" name="ele1" placeholder="Enter the task">
-            <button type="submit">+</button>
-        </form>
-    </div>
-
+  <!-- ✅ Add button and form should come after the list -->
+  <div class="box">
+    <form action="/" method="POST">
+      <input type="text" name="newItem" placeholder="New Task" required>
+      <select name="priority" required>
+        <option value="">Select Priority</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+      <button type="submit">Add</button>
+    </form>
+  </div>
 </body>
 </html>
